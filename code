@@ -1,1 +1,84 @@
+---
+title: "R Project 3"
+author: "Sean Finnigan, Ryan Lienhart, Rachel McConaghy"
+date: "5/3/2022"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+#### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
+
+```{r}
+# Simulate Data
+set.seed(123)
+data <- rlnorm(1000, meanlog = 0, sdlog = 1)
+```
+
+##### a) Plot the histogram of your data in R
+
+```{r}
+hist(data, freq=FALSE, breaks=30)
+```
+
+
+##### b) Estimate the LN-parameters using the Method of Moments. Show your derivations.
+
+```{r}
+n <- length(data)
+
+mu.mm <- log((1/(mean(data)^2))*(1/n)*sum(data^2))
+mu.mm
+
+s2.mm <- log((1/(mean(data)^2))*sqrt(n*sum(data^2)))
+s2.mm
+```
+
+
+##### c) Estimate the LN-parameters using the Maximum Likelihood Estimation. Show your derivations.
+
+```{r}
+mu.mle <- (1/n)*sum(log(data))
+mu.mle
+
+s2.mle <- (1/n)*sum((log(data)-mu.mle)^2)
+s2.mle
+```
+
+
+##### d) Plot the density using estimates in b) repeat the same using estimated in c). Overlay these two densities on your original histogram in a). Discuss your findings.
+
+```{r}
+hist(data, freq=FALSE, breaks = 30)
+a <- seq(0, 20, by = 0.01)
+b <- dlnorm(a, mu.mm, s2.mm)
+points(a, b, col="red")
+
+hist(data, freq=FALSE, breaks = 30)
+x <- seq(0, 20, by = 0.01)
+y <- dlnorm(x, mu.mle, s2.mle)
+points(x, y, col="red")
+```
+
+##### e) Calculate the Bias and MSE for both estimators computed in b) and c). Present your summary of the results in a table format. Discuss your findings.
+
+```{r}
+bias.mm <- mu.mm - mean(data)
+mse.mm <- (sd(data)^2) + bias.mm^2
+bias.mle <- mu.mle - mean(data)
+mse.mle <- (sd(data)^2) + bias.mle^2
+
+table <-  data.frame(bias = c(bias.mm, bias.mle), MSE = c(mse.mm, mse.mle))
+colnames(table) = c("Bias", "MSE")
+rownames(table) = c("Method of Moments", "Maximum Likelihood Estimation")
+kable(table)
+```
+
+##### f) Calculate the efficiency of the estimator in c) relative to that in b) for both parameters of interest. Discuss your findings.
+
+```{r}
+eff <- s2.mm/s2.mle
+eff
+```
