@@ -23,21 +23,38 @@ data <- rlnorm(1000, meanlog = 0, sdlog = 1)
 hist(data, freq=FALSE, breaks=30)
 ```
 
-
 ##### b) Estimate the LN-parameters using the Method of Moments. Show your derivations.
 
 ```{r}
 n <- length(data)
 
-mu.mm <- log((1/(mean(data)^2))*(1/n)*sum(data^2))
+mu.mm <- log(((mean(data)^2))*sqrt(n/sum(data^2)))
 mu.mm
 
-s2.mm <- log((1/(mean(data)^2))*sqrt(n*sum(data^2)))
+s2.mm <- log((1/(mean(data)^2))*(1/n)*sum(data^2))
 s2.mm
 ```
 
-
 ##### c) Estimate the LN-parameters using the Maximum Likelihood Estimation. Show your derivations.
+
+$$\begin{aligned}
+L(\mu,\sigma^2)&=f(y_1, y_2,...,y_n|\mu,\sigma^2)\\
+&=\prod_{i=1}^n\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(ln(y_i)-\mu)^2}{2\sigma^2}}\\
+&=\left(\prod_{i=1}^n\frac{1}{y_i}\right)\left(\frac{1}{2\pi\sigma^2}\right)^{\frac{n}{2}}e^{-\frac{\sum_{i=1}^n(ln(y_i)-\mu)^2}{2\sigma^2}}
+\end{aligned}$$
+$$log(L(\mu,\sigma^2))=-log(\prod_{i=1}^ny_i)-\frac{n}{2}log(\sigma^2)-\frac{n}{2}log(2\pi)-\frac{1}{2\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2$$
+$$\frac{\partial{log(L(\mu,\sigma^2))}}{\partial\mu}=\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)=0$$
+$$\begin{aligned}
+&\Rightarrow\sum_{i=1}^nln(y_i)-n\mu=0\\
+&\Rightarrow{n}\mu=\sum_{i=1}^nln(y_i)\\
+&\Rightarrow\hat{\mu}_{MM}=\frac{1}{n}\sum_{i=1}^nln(y_i)
+\end{aligned}$$
+$$\frac{\partial{log(L(\mu,\sigma^2))}}{\partial\sigma^2}=-\frac{n}{\sigma^2}+\frac{1}{2\sigma^4}\sum_{i=1}^n(ln(y_i)-\mu)^2=0$$
+$$\begin{aligned}
+&\Rightarrow{-n}+\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2=0\\
+&\Rightarrow\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2=n\\
+&\Rightarrow\hat{\sigma^2}_{MM}=\frac{1}{n}\sum_{i=1}^n(ln(y_i)-\mu)^2\\
+\end{aligned}$$
 
 ```{r}
 mu.mle <- (1/n)*sum(log(data))
@@ -46,7 +63,6 @@ mu.mle
 s2.mle <- (1/n)*sum((log(data)-mu.mle)^2)
 s2.mle
 ```
-
 
 ##### d) Plot the density using estimates in b) repeat the same using estimated in c). Overlay these two densities on your original histogram in a). Discuss your findings.
 
