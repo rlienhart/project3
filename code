@@ -25,6 +25,40 @@ hist(data, freq=FALSE, breaks=30)
 
 ##### b) Estimate the LN-parameters using the Method of Moments. Show your derivations.
 
+$$\mu_1'=\mu=E(Y)=e^{\mu+\frac{\sigma^2}{2}}$$
+
+$$m_1'=\frac{1}{n}\sum_{i=0}^ny_i=\bar{Y}$$
+
+$$\Rightarrow{e}^{\mu+\frac{\sigma^2}{2}}=\bar{Y}$$
+
+$$\begin{aligned}
+\mu_2'&=E(Y^2)=V(Y)+E(Y)^2\\
+&=(e^{\sigma^2}-1)(e^{2\mu+\sigma^2})+(e^{\mu+\frac{\sigma^2}{2}})^2\\
+&=(e^{\sigma^2}-1)(e^{2\mu+\sigma^2})+(e^{2\mu+\sigma^2})\\
+&=e^{\sigma^2}(e^{2\mu+\sigma^2})\\
+&=e^{\sigma^2}\bar{Y}^2
+\end{aligned}$$
+
+$$m_2'=\frac{1}{n}\sum_{i=0}^ny_i^2$$
+
+$$\Rightarrow{e}^{\sigma^2}\bar{Y}^2=\frac{1}{n}\sum_{i=0}^ny_i^2$$
+
+Solve for $\hat{\mu}_{MM}$ and $\hat{\sigma}^2_{MM}$:
+
+$$e^{\sigma^2}=\frac{1}{\bar{Y}^2n}\sum_{i=0}^ny_i^2$$
+
+$$\Rightarrow{\hat{\sigma}^2_{MM}}=\ln\left(\frac{1}{\bar{Y}^2n}\sum_{i=0}^ny_i^2\right)$$
+
+$$\mu+\frac{\sigma^2}{2}=\ln(\bar{Y})$$
+
+$$\begin{aligned}
+\Rightarrow\hat{\mu}_{MM}&=\ln(\bar{Y})-\frac{\sigma^2}{2}\\
+&=\ln(\bar{Y})-\frac{1}{2}\ln\left(\frac{1}{\bar{Y}^2n}\sum_{i=0}^ny_i^2\right)\\
+&=\ln(\bar{Y})+\ln\left(\frac{1}{\bar{Y}^2n}\sum_{i=0}^ny_i^2\right)^{-\frac{1}{2}}\\
+&=\ln(\bar{Y})+\ln\left(\bar{Y}\sqrt{\frac{n}{\sum_{i=0}^ny_i^2}}\right)\\
+&=\ln\left(\bar{Y}^2\sqrt{\frac{n}{\sum_{i=0}^ny_i^2}}\right)
+\end{aligned}$$
+
 ```{r}
 n <- length(data)
 
@@ -39,21 +73,22 @@ s2.mm
 
 $$\begin{aligned}
 L(\mu,\sigma^2)&=f(y_1, y_2,...,y_n|\mu,\sigma^2)\\
-&=\prod_{i=1}^n\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(ln(y_i)-\mu)^2}{2\sigma^2}}\\
-&=\left(\prod_{i=1}^n\frac{1}{y_i}\right)\left(\frac{1}{2\pi\sigma^2}\right)^{\frac{n}{2}}e^{-\frac{\sum_{i=1}^n(ln(y_i)-\mu)^2}{2\sigma^2}}
+&=\prod_{i=1}^n\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}\\
+&=\left(\prod_{i=1}^n\frac{1}{y_i}\right)\left(\frac{1}{2\pi\sigma^2}\right)^{\frac{n}{2}}e^{-\frac{\sum_{i=1}^n(\ln(y_i)-\mu)^2}{2\sigma^2}}
 \end{aligned}$$
-$$log(L(\mu,\sigma^2))=-log(\prod_{i=1}^ny_i)-\frac{n}{2}log(\sigma^2)-\frac{n}{2}log(2\pi)-\frac{1}{2\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2$$
-$$\frac{\partial{log(L(\mu,\sigma^2))}}{\partial\mu}=\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)=0$$
+$$\log(L(\mu,\sigma^2))=-\log(\prod_{i=1}^ny_i)-\frac{n}{2}\log(\sigma^2)-\frac{n}{2}\log(2\pi)-\frac{1}{2\sigma^2}\sum_{i=1}^n(\ln(y_i)-\mu)^2$$
+$$\frac{\partial{\log(L(\mu,\sigma^2))}}{\partial\mu}=\frac{1}{\sigma^2}\sum_{i=1}^n(\ln(y_i)-\mu)=0$$
 $$\begin{aligned}
-&\Rightarrow\sum_{i=1}^nln(y_i)-n\mu=0\\
-&\Rightarrow{n}\mu=\sum_{i=1}^nln(y_i)\\
-&\Rightarrow\hat{\mu}_{MM}=\frac{1}{n}\sum_{i=1}^nln(y_i)
+&\Rightarrow\sum_{i=1}^n\ln(y_i)-n\mu=0\\
+&\Rightarrow{n}\mu=\sum_{i=1}^n\ln(y_i)\\
+&\Rightarrow\hat{\mu}_{MLE}=\frac{1}{n}\sum_{i=1}^n\ln(y_i)
 \end{aligned}$$
-$$\frac{\partial{log(L(\mu,\sigma^2))}}{\partial\sigma^2}=-\frac{n}{\sigma^2}+\frac{1}{2\sigma^4}\sum_{i=1}^n(ln(y_i)-\mu)^2=0$$
+
+$$\frac{\partial{\log(L(\mu,\sigma^2))}}{\partial\sigma^2}=-\frac{n}{\sigma^2}+\frac{1}{2\sigma^4}\sum_{i=1}^n(\ln(y_i)-\mu)^2=0$$
 $$\begin{aligned}
-&\Rightarrow{-n}+\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2=0\\
-&\Rightarrow\frac{1}{\sigma^2}\sum_{i=1}^n(ln(y_i)-\mu)^2=n\\
-&\Rightarrow\hat{\sigma^2}_{MM}=\frac{1}{n}\sum_{i=1}^n(ln(y_i)-\mu)^2\\
+&\Rightarrow{-n}+\frac{1}{\sigma^2}\sum_{i=1}^n(\ln(y_i)-\mu)^2=0\\
+&\Rightarrow\frac{1}{\sigma^2}\sum_{i=1}^n(\ln(y_i)-\mu)^2=n\\
+&\Rightarrow\hat{\sigma}^2_{MLE}=\frac{1}{n}\sum_{i=1}^n(\ln(y_i)-\mu)^2\\
 \end{aligned}$$
 
 ```{r}
@@ -68,12 +103,12 @@ s2.mle
 
 ```{r}
 hist(data, freq=FALSE, breaks = 30)
-a <- seq(0, 20, by = 0.01)
+a <- seq(0, 25, by = 0.01)
 b <- dlnorm(a, mu.mm, s2.mm)
 points(a, b, col="red")
 
 hist(data, freq=FALSE, breaks = 30)
-x <- seq(0, 20, by = 0.01)
+x <- seq(0, 25, by = 0.01)
 y <- dlnorm(x, mu.mle, s2.mle)
 points(x, y, col="red")
 ```
