@@ -102,27 +102,34 @@ s2.mle
 ##### d) Plot the density using estimates in b) repeat the same using estimated in c). Overlay these two densities on your original histogram in a). Discuss your findings.
 
 ```{r}
-hist(data, freq=FALSE, breaks = 30)
+hist(data, freq=FALSE, breaks = 30, ylim=c(0, 0.7))
 a <- seq(0, 25, by = 0.01)
 b <- dlnorm(a, mu.mm, s2.mm)
 points(a, b, col="red")
 
-hist(data, freq=FALSE, breaks = 30)
+hist(data, freq=FALSE, breaks = 30, ylim=c(0, 0.7))
 x <- seq(0, 25, by = 0.01)
 y <- dlnorm(x, mu.mle, s2.mle)
 points(x, y, col="red")
 ```
 
+The shape of the plotted density of a lognormal distribution using the method of moments estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with mean 0 and variance 1. The shape of the plotted density of a lognormal distribution using the maximum likelihood estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with mean 0 and variance 1. From these graphs we cannot see an obvious difference in the performance of the estimators, so further comparisons of the estimators will be used to determine if the method of moments estimators or maximum likelihood estimators perform better.
+
 ##### e) Calculate the Bias and MSE for both estimators computed in b) and c). Present your summary of the results in a table format. Discuss your findings.
 
 ```{r}
-bias.mm <- mu.mm - mean(data)
-mse.mm <- (sd(data)^2) + bias.mm^2
-bias.mle <- mu.mle - mean(data)
-mse.mle <- (sd(data)^2) + bias.mle^2
+bias.mu.mm <- mu.mm - mean(data)
+bias.mu.mle <- mu.mle - mean(data)
+bias.s2.mm <- s2.mm - sd(data)^2
+bias.s2.mle <- s2.mle - sd(data)^2
 
-table <-  data.frame(bias = c(bias.mm, bias.mle), MSE = c(mse.mm, mse.mle))
-colnames(table) = c("Bias", "MSE")
+#mse.mu.mm <- + bias.mu.mm^2
+#mse.mu.mle <- + bias.mu.mle^2
+#mse.s2.mm <- + bias.s2.mm^2
+#mse.s2.mle <- + bias.s2.mle^2
+
+table <-  data.frame(bias.mu=c(bias.mu.mm, bias.mu.mle), bias.s2=c(bias.s2.mm, bias.s2.mle), mse.mu=c(0,0), mse.s2=c(0,0))
+colnames(table) = c("Bias of $\\mu$", "Bias of $\\sigma^2$", "MSE of $\\mu$", "MSE of $\\sigma^2$")
 rownames(table) = c("Method of Moments", "Maximum Likelihood Estimation")
 kable(table)
 ```
@@ -130,6 +137,5 @@ kable(table)
 ##### f) Calculate the efficiency of the estimator in c) relative to that in b) for both parameters of interest. Discuss your findings.
 
 ```{r}
-eff <- s2.mm/s2.mle
-eff
+
 ```
