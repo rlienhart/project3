@@ -139,3 +139,63 @@ kable(table)
 ```{r}
 
 ```
+
+
+4. (20pts) Suppose you want to test the following hypotheses: 
+Ho: μ = 30,000
+Ha: μ  ≠ 30,000
+Use α=0.05 and α=0.01.
+a) Define a rejection region for a given α-level. Assume σ=5,000. All derivations must be included in the report. [Note: the sample size is small!]
+
+```{r}
+30000 + (5000/sqrt(29))*qt(.025, 28)
+30000 + (5000/sqrt(29))*qt(.975, 28)
+
+30000 + (5000/sqrt(29))*qt(.005, 28)
+30000 + (5000/sqrt(29))*qt(.995, 28)
+```
+
+Given a small sample where n = 29:
+
+For α=0.05, RR = {T < 28098.1 or T > 31901.9}
+
+For α=0.01, RR = {T < 27434.38 or T > 32565.62}
+
+
+b) Construct two Power Curves for various values of β- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.] 
+
+```{r}
+powerfunction <- function(mu, sd, alpha1, alpha2, n) {
+  vec <- seq(20001,39999,1)
+  se <- (sd/sqrt(n))
+  
+  q1 = qt(1-alpha1/2, n-1)
+  q2 = qt(1-alpha2/2, n-1)
+  
+  rr_lower1 <- ((mu-q1*se)-vec)/se
+  rr_upper1 <- ((mu+q1*se)-vec)/se
+  
+  
+  rr_lower2 <- ((mu-q2*se)-vec)/se
+  rr_upper2 <- ((mu+q2*se)-vec)/se
+  
+  power1 <- pt(rr_upper1, df=n-1, lower.tail = FALSE) + 
+    pt(rr_lower1, df=n-1, lower.tail=TRUE)
+  power2 <- pt(rr_upper2, df=n-1, lower.tail = FALSE) +
+    pt(rr_lower2, df=n-1, lower.tail=TRUE)
+  
+  
+  ggplot() +
+  geom_path(aes(x=vec, y=power1), size=0.8, color="royalblue") +
+  geom_path(aes(x=vec, y=power2), size=0.8, color="limegreen") +
+  labs(y="Power", x=expression("mu under H"["a"]))
+  
+}
+
+powerfunction(30000,5000,.05,.01,29)
+
+```
+
+c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
+
+Increasing α causes the shape of the power curve to becomes more narrow. The area under the curve also increases as α does. This is a result of power increasing as α increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
