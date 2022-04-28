@@ -13,7 +13,6 @@ library(knitr)
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
 
 ```{r}
-# Simulate Data
 set.seed(123)
 n <- 1000
 mu <- 0
