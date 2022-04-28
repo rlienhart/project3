@@ -13,11 +13,25 @@ library(ggplot2)
 
 #### 1. (20pts) Consider a left truncated Gaussian distribution with parameters 𝜇 and 𝜎2.  The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.  
 #####a) Write down the density function of the left-truncated random variable if the truncation point is b.
+
+$f(x;\mu,\sigma^2,b) = \frac{\frac{e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}}{\sqrt{(2\pi\sigma^2)}}}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}}))}$
+
 #####b) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
+
+$F(x;\mu,\sigma^2,b) =  \frac{\frac{1}{2}(1 + erf(\frac{x-\mu}{\sqrt{2\sigma^2 }}))}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sqrt{2\sigma^2}}))}$
+
 #####c) Develop a Likelihood function for the left-truncated distribution.
+
+$L(\mu,\sigma^2,b;x_{i})=(\frac{1}{\sqrt{(2\pi\sigma^2)}\frac{1}{2}(1-erf(\frac{b-\mu}{\sigma\sqrt{2}}))})^n  e^{\sum_{i=1}^n-\frac{1}{2}(\frac{x_{i}-\mu}{\sigma})^2}$
+
 #####d) Develop the log-likelihood function for the left-truncated distribution.
+
+$log(L(\mu,\sigma^2,b;x_{i}))=-\frac{n}{2}log(2\pi)-\frac{n}{2}log(\sigma^2)-nlog(\frac{1}{2}(1-erf(\frac{b-\mu}{\sigma\sqrt{2}})))+\sum_{i=1}^n-\frac{1}{2}(\frac{x_{i}-\mu}{\sigma})^2$
+
 #####e) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
-In order to find the MLEs, we could try taking the derivative with respect to each variable $\mu$, $\sigma$, and b, and setting it equal to zero in order to solve for each parameter.
+
+Normally to derive the MLEs, we would take the derivate of the log-lielihood function in terms of our estimators. That being said, our log-likelihood function is very complex and hard to get a derivative from. Our best option would be to use the optim function in r to find the MLE for the function.
+
 #####f) Perform computations in R: generate a sample from the left-truncated Gaussian distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).  
 #####g) Plot the sample and the density function in R. Label your plot accordingly.
 
@@ -238,3 +252,7 @@ powerfunction(30000,5000,.05,.01,29)
 #####c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
 
 Increasing α causes the shape of the power curve to becomes more narrow. The area under the curve also increases as α does. This is a result of power increasing as α increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
+
+5. (20pts) Provide a reflection about this project work by considering the following questions: 1) How does this project enhanced your learning about the course topics? How much this project sharpens your critical thinking skills? What were the difficulties that you were facing as you worked through this project? How did you resolve them? How much did you grow by working on some advanced topics in this course? How do you think this project would prepare you for your future job? What skills did you build working on the STA462 projects? The UAs are expected to work with you on this project. State specifically the name of the UA you worked with and how much help you got from your UA.  
+
+This project enhanced our learning skills by having us apply techniques learned in class to distributions we were unfamiliar with. Are critical thinking skills were enhanced by finding these new distributions and having to learn about them and understand them. We had to research these truncated distributions, find out there pdfs, and understand there equations. Then, we had to apply concepts like the likelhood estimator and MLE to these distributions. We believe we learned a lot about tackling these tough problems, specifically growing in our ability to handle topics we had not previously discussed. The biggest difficulties we faced was understanding these distributions and there equations, and how to find the MLE of these complex pdfs. We resolved these problems by working togehter as a group and asking our UA Justus for help when we got stuck. I think this project prepared us for a future job by teaching us a lot about working as a group on a complex topic. We worked together to research and understand different things, and we learned to ask for help when we needed to. Our UA Justus helped a lot on this project, he did a great job of checking over are work when needed, and pushing us in the right direction whenever we got stuck.
