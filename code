@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(ggplot2)
 ```
 
 #### 1. (20pts) Consider a left truncated Gaussian distribution with parameters 𝜇 and 𝜎2.  The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.  
@@ -19,6 +20,22 @@ library(knitr)
 In order to find the MLEs, we could try taking the derivative with respect to each variable $\mu$, $\sigma$, and b, and setting it equal to zero in order to solve for each parameter.
 #####f) Perform computations in R: generate a sample from the left-truncated Gaussian distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).  
 #####g) Plot the sample and the density function in R. Label your plot accordingly.
+
+####2. (20pts) Repeat Q1 using Lognormal distribution. Consider a left truncated Lognormal distribution with parameters 𝜇 and 𝜎2.  The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.  
+#####h) Write down the density function of the left-truncated random variable if the truncation point is b.
+$$\frac{f(y_i|\mu,\sigma^2)}{1-F(b|\mu, \sigma^2)}=\frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^-{\frac{(ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt{2}}))}$$
+#####i) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
+$$\int_{0}^{\infty} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^-{\frac{(ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt{2}}))} \; dy_i$$
+$$= \frac{1}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt{2}}))} \int_{0}^{\infty} \frac{1}{y_i\sigma\sqrt{2\pi}}e^-{\frac{-(ln(y_i)-\mu)^2}{2\sigma^2}}$$
+$$= \frac{\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt2})}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt2})}$$
+#####j) Develop a Likelihood function for the left-truncated distribution.
+$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt2})}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt2})}$$
+$$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^\frac{-\sum_{i = 1}^{n} ln(y_i)-\mu)^2}{2\sigma^2}}{1-\frac{1}{2}(1 + erf(\frac{ln(b)-\mu}{\sigma\sqrt{2}}))^n}$$
+#####k) Develop the log-likelihood function for the left-truncated distribution.
+$$log(L(\mu,\sigma^2)) = -log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}log(\sigma^2) - \frac{n}{2}log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (ln(y_i)-\mu)^2 - nlog(1-\frac{1}{2}(1 + erf(\frac{ln(b)-\mu}{\sigma\sqrt2})))$$
+#####l) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
+#####m) Perform computations in R: generate a sample from the left-truncated Lognormal distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).  
+#####n) Plot the sample and the density function in R. Label your plot accordingly. 
 
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
 
