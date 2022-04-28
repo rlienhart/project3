@@ -10,6 +10,16 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
+#### 1. (20pts) Consider a left truncated Gaussian distribution with parameters 𝜇 and 𝜎2.  The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.  
+#####a) Write down the density function of the left-truncated random variable if the truncation point is b.
+#####b) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
+#####c) Develop a Likelihood function for the left-truncated distribution.
+#####d) Develop the log-likelihood function for the left-truncated distribution.
+#####e) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
+In order to find the MLEs, we could try taking the derivative with respect to each variable $\mu$, $\sigma$, and b, and setting it equal to zero in order to solve for each parameter.
+#####f) Perform computations in R: generate a sample from the left-truncated Gaussian distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).  
+#####g) Plot the sample and the density function in R. Label your plot accordingly.
+
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
 
 ```{r}
