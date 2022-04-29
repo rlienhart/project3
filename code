@@ -49,6 +49,23 @@ $$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^
 $$log(L(\mu,\sigma^2)) = -log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}log(\sigma^2) - \frac{n}{2}log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (ln(y_i)-\mu)^2 - nlog(1-\frac{1}{2}(1 + erf(\frac{ln(b)-\mu}{\sigma\sqrt2})))$$
 #####l) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 #####m) Perform computations in R: generate a sample from the left-truncated Lognormal distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).  
+```{r}
+set.seed(100)
+ln.trunc <- rlnormTrunc(1000, meanlog=0, sdlog=1, min=10)
+
+LL.ln.ltrunc <- function(theta, y, n) {
+  mu <- theta[1]
+  s2 <- theta[2]
+  loglik <- -log(prod(y))-(n/2)*log(s2)-(n/2)*log(2*pi)-(1/(2*s2))*sum((log(y)-mu)^2)-n*log(1-(1/2)*(1+erf((log(10)-mu)/sqrt(s2*2))))
+  -loglik
+}
+
+#ln.ltrunc.mle <- replicate(20000, expr = {
+#  x <- rlnormTrunc(1000, meanlog=0, sdlog=1, min=10)
+#  optim(par=c(0,1), fn=LL.ln.ltrunc, y = x, n = 1000)$par
+#})
+```
+
 #####n) Plot the sample and the density function in R. Label your plot accordingly. 
 
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
