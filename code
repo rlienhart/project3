@@ -76,26 +76,38 @@ $$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^
 
 Normally to derive the MLEs, we would take the derivative of the log-likelihood function in terms of our estimators. That being said, our log-likelihood function is very complex and hard to get a derivative from. Our best option would be to use the optim function in r to find the MLEs for the left truncated lognormal distribution.
 
-##### m) Perform computations in R: generate a sample from the left-truncated Lognormal distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).
-
-```{r}
+```{r, cache=TRUE}
 set.seed(100)
-ln.trunc <- rlnormTrunc(1000, meanlog=0, sdlog=1, min=10)
+ln.ltrunc <- rlnormTrunc(10000, meanlog=0, sdlog=1, min=10)
 
-LL.ln.ltrunc <- function(theta, y, n) {
-  mu <- theta[1]
-  s2 <- theta[2]
-  loglik <- -log(prod(y))-(n/2)*log(s2)-(n/2)*log(2*pi)-(1/(2*s2))*sum((log(y)-mu)^2)-n*log(1-(1/2)*(1+erf((log(10)-mu)/sqrt(s2*2))))
-  -loglik
+LL <- function(pars, y) {
+  sum <- 0
+  mu <- pars[1]
+  s2 <- pars[2]
+  b <- pars[3]
+  for (i in 1:length(y)) {
+    sum <- sum + log(dlnormTrunc(y[i], meanlog=mu, sdlog=sqrt(s2), min=b))
+  }
+  return(-sum)
 }
 
-#ln.ltrunc.mle <- replicate(20000, expr = {
-#  x <- rlnormTrunc(1000, meanlog=0, sdlog=1, min=10)
-#  optim(par=c(0,1), fn=LL.ln.ltrunc, y = x, n = 1000)$par
-#})
+pars <- c(0,1,10)
+mle <- optim(par=pars, fn=LL, method="Nelder-Mead", y=ln.ltrunc)$par
+mle
 ```
 
-#####n) Plot the sample and the density function in R. Label your plot accordingly. 
+$\hat{\mu}_{MLE}=0.004001414$
+
+$\hat{\sigma}^2_{MLE}=1.001586203$
+
+##### n) Plot the sample and the density function in R. Label your plot accordingly.
+
+```{r}
+hist(ln.ltrunc, prob=TRUE, breaks=30, ylim=c(0,0.2), main="Density Using MLE Estimates Over Left Truncated Lognormal Data", xlab="Left Truncated Lognormal Data")
+curve(dlnormTrunc(x, meanlog=mle[1], sdlog=sqrt(mle[2]), min=mle[3]), col="red", lwd=2, add=TRUE, yaxt="n")
+```
+
+The shape of the plotted density of a left truncated lognormal distribution using the maximum likelihood estimators that were extracted using the optim function follows very closely to the shape of the histogram of the data simulated from a left truncated lognormal distribution with $\mu=0$, $\sigma^2=1$, and truncation point $b=10$.
 
 ***
 
