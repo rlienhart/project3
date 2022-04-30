@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(ggplot2)
 library(EnvStats)
-library(pracma)
 library(stats)
 ```
 
@@ -75,6 +74,8 @@ $$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^
 ##### l) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
 Normally to derive the MLEs, we would take the derivative of the log-likelihood function in terms of our estimators. That being said, our log-likelihood function is very complex and hard to get a derivative from. Our best option would be to use the optim function in r to find the MLEs for the left truncated lognormal distribution.
+
+##### m) Perform computations in R: generate a sample from the left-truncated Lognormal distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in l).
 
 ```{r, cache=TRUE}
 set.seed(100)
