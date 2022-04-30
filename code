@@ -68,9 +68,12 @@ LL.ln.ltrunc <- function(theta, y, n) {
 
 #####n) Plot the sample and the density function in R. Label your plot accordingly. 
 
+***
+
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
 
 ```{r}
+# Simulate Data
 set.seed(123)
 n <- 1000
 mu <- 0
@@ -81,7 +84,7 @@ x <- rlnorm(n, meanlog = mu, sdlog = s2)
 ##### a) Plot the histogram of your data in R
 
 ```{r}
-hist(x, freq=FALSE, breaks=30)
+hist(x, freq=FALSE, breaks=30, main=expression("Histogram of Lognormal Data with "~mu==0~" and "~sigma^2==1))
 ```
 
 ##### b) Estimate the LN-parameters using the Method of Moments. Show your derivations.
@@ -133,6 +136,12 @@ mu.s2.mm <- colMeans(mmests)
 mu.s2.mm
 ```
 
+The method of moments estimates for a lognormal distribution with $\mu=0$ and $\sigma^2=1$ are:
+
+$\hat{\mu}_{MM}=0.008678145$
+
+$\hat{\sigma}^2_{MM}=0.981518599$
+
 ##### c) Estimate the LN-parameters using the Maximum Likelihood Estimation. Show your derivations.
 
 $$\begin{aligned}
@@ -168,33 +177,47 @@ mu.s2.mle <- colMeans(mlests)
 mu.s2.mle
 ```
 
+The maximum likelihood estimates for a lognormal distribution with $\mu=0$ and $\sigma^2=1$ are:
+
+$\hat{\mu}_{MLE}=-0.001214673$
+
+$\hat{\sigma}^2_{MLE}=0.9994245861$
+
 ##### d) Plot the density using estimates in b) repeat the same using estimated in c). Overlay these two densities on your original histogram in a). Discuss your findings.
 
 ```{r}
-hist(x, freq=FALSE, breaks = 30, ylim=c(0, 0.7))
+hist(x, freq=FALSE, breaks = 30, ylim=c(0, 0.7), main="Plot of Density Using MM Estimates Over Lognormal Data")
 a <- seq(0, 25, by = 0.01)
 b <- dlnorm(a, mu.s2.mm[1], mu.s2.mm[2])
 points(a, b, col="red")
 
-hist(x, freq=FALSE, breaks = 30, ylim=c(0, 0.7))
+hist(x, freq=FALSE, breaks = 30, ylim=c(0, 0.7), main="Plot of Density Using MLEs Over Lognormal Data")
 c <- dlnorm(a, mu.s2.mle[1], mu.s2.mle[2])
 points(a, c, col="red")
 ```
 
-The shape of the plotted density of a lognormal distribution using the method of moments estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with mean 0 and variance 1. The shape of the plotted density of a lognormal distribution using the maximum likelihood estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with mean 0 and variance 1. From these graphs we cannot see an obvious difference in the performance of the estimators, so further comparisons of the estimators will be used to determine if the method of moments estimators or maximum likelihood estimators perform better.
+The shape of the plotted density of a lognormal distribution using the method of moments estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with $\mu=0$ and $\sigma^2=1$. The shape of the plotted density of a lognormal distribution using the maximum likelihood estimators follows very closely to the shape of the histogram of the data simulated from a lognormal distribution with $\mu=0$ and $\sigma^2=1$. From these graphs we cannot see an obvious difference in the performance of the estimators, so further comparisons of the estimators will be used to determine if the method of moments estimators or maximum likelihood estimators perform better.
 
 ##### e) Calculate the Bias and MSE for both estimators computed in b) and c). Present your summary of the results in a table format. Discuss your findings.
 
 ```{r}
+# Calculate Bias
 bias.mu.mm <- mu.s2.mm[1] - mu
 bias.mu.mle <- mu.s2.mle[1] - mu
 bias.s2.mm <- mu.s2.mm[2] - s2
 bias.s2.mle <- mu.s2.mle[2] - s2
 
-mse.mu.mm <- sd(mmests[,1])^2 + bias.mu.mm^2
-mse.mu.mle <- sd(mlests[,1])^2 + bias.mu.mle^2
-mse.s2.mm <- sd(mmests[,2])^2 + bias.s2.mm^2
-mse.s2.mle <- sd(mmests[,2])^2 + bias.s2.mle^2
+# Variance of the Estimators
+var.mu.mm <- sd(mmests[,1])^2
+var.mu.mle <- sd(mlests[,1])^2
+var.s2.mm <- sd(mmests[,2])^2
+var.s2.mle <- sd(mlests[,2])^2
+
+# Calculate MSE
+mse.mu.mm <- var.mu.mm + bias.mu.mm^2
+mse.mu.mle <- var.mu.mle + bias.mu.mle^2
+mse.s2.mm <- var.s2.mm + bias.s2.mm^2
+mse.s2.mle <- var.s2.mle + bias.s2.mle^2
 
 table <-  data.frame(bias.mu=c(bias.mu.mm, bias.mu.mle), bias.s2=c(bias.s2.mm, bias.s2.mle), mse.mu=c(mse.mu.mm, mse.mu.mle), mse.s2=c(mse.s2.mm, mse.s2.mle))
 colnames(table) = c("Bias of $\\mu$", "Bias of $\\sigma^2$", "MSE of $\\mu$", "MSE of $\\sigma^2$")
@@ -202,14 +225,22 @@ rownames(table) = c("Method of Moments", "Maximum Likelihood Estimation")
 kable(table)
 ```
 
+The bias of $\hat{\mu}_{MM}$, $\hat{\mu}_{MLE}$, $\hat{\sigma}^2_{MM}$, and $\hat{\sigma}^2_{MLE}$ are all very close to 0, so the method of moments and maximum likelihood estimates appear to be good estimates for the lognormal parameters. The bias of $\hat{\mu}_{MLE}$ is less than the bias of $\hat{\mu}_{MM}$ for $\mu$ and the bias of $\hat{\sigma}^2_{MLE}$ is less than the bias of $\hat{\sigma}^2_{MM}$ for $\sigma^2$, so the maximum likelihood estimators seem to be better unbiased estimators for the lognormal parameters than the method of moments estimators. The MSE of $\hat{\mu}_{MM}$, $\hat{\mu}_{MLE}$, $\hat{\sigma}^2_{MM}$, and $\hat{\sigma}^2_{MLE}$ are also all very close to 0, so so the method of moments and maximum likelihood estimates perform well for estimating the lognormal parameters. The MSE of $\hat{\mu}_{MLE}$ is less than the MSE of $\hat{\mu}_{MM}$ and the MSE of $\hat{\sigma}^2_{MLE}$ is less than the MSE of $\hat{\sigma}^2_{MM}$, so the maximum likelihood estimators seem to perform better for estimating lognormal parameters than the method of moments estimators.
+
 ##### f) Calculate the efficiency of the estimator in c) relative to that in b) for both parameters of interest. Discuss your findings.
 
 ```{r}
-eff.mu <- (sd(mmests[,1])^2)/(sd(mlests[,1])^2)
+eff.mu <- var.mu.mm/var.mu.mle
 eff.mu
-eff.s2 <- (sd(mmests[,2])^2)/(sd(mlests[,2])^2)
+eff.s2 <- var.s2.mm/var.s2.mle
 eff.s2
 ```
+
+$eff(\hat{\mu}_{MLE},\hat{\mu}_{MM})=\frac{Var(\hat{\mu}_{MM})}{Var(\hat{\mu}_{MLE})}=3.858594>1$, so $\hat{\mu}_{MLE}$ is a better unbiased estimator for $\mu$ than $\hat{\mu}_{MM}$.
+
+$eff(\hat{\sigma}^2_{MLE},\hat{\sigma}^2_{MM})=\frac{Var(\hat{\sigma}^2_{MM})}{Var(\hat{\sigma}^2_{MLE})}=9.191056>1$, so $\hat{\sigma}^2_{MLE}$ is a better unbiased estimator for $\sigma^2$ than $\hat{\sigma}^2_{MM}$.
+
+Overall, the maximum likelihood estimators perform better than the method of moments estimators for estimating $\mu$ and $\sigma^2$ of a lognormal distribution.
 
 ***
 
