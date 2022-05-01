@@ -11,6 +11,7 @@ library(knitr)
 library(ggplot2)
 library(EnvStats)
 library(stats)
+library(truncnorm)
 ```
 
 #### 1. (20pts) Consider a left truncated Gaussian distribution with parameters $\mu$ and $\sigma^2$. The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.
