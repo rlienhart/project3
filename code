@@ -43,7 +43,40 @@ Normally to derive the MLEs, we would take the derivative of the log-likelihood 
 
 ##### f) Perform computations in R: generate a sample from the left-truncated Gaussian distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in e).
 
+```{r}
+set.seed(100)
+x <- rtruncnorm(10000, a=2, mean = 4, sd = 2)
+
+LL <- function(pars, y) {
+  sum <- 0
+  mu <- pars[1]
+  s2 <- pars[2]
+  b <- pars[3]
+  for (i in 1:length(y)) {
+    sum <- sum + log(dtruncnorm(y[i], a=b, mean=mu, sd=s2))
+  }
+  return(-sum)
+}
+
+pars <- c(4,2,2)
+mle <- optim(par=pars, fn=LL, method="Nelder-Mead", y=x)$par
+mle
+```
+
+$\hat{\mu}_{MLE}=4.0062$
+
+$\hat{\sigma}_{MLE}=1.9938$
+
+$\hat{b}_{MLE}=2.0012$
+
 #####  g) Plot the sample and the density function in R. Label your plot accordingly.
+
+```{r}
+hist(x, prob=TRUE, main="Density Using MLE Estimates Over Left Truncated Gaussian Data", xlab="Left Truncated Gaussian Data")
+curve(dtruncnorm(x, a=mle[3], mean=mle[1], sd=mle[2]), col="red", lwd=2, add=TRUE, yaxt="n")
+```
+
+We see in the graph above that the MLE gained from using the optim function very accuratly reflects the randomly generated truncated gaussian data.
 
 ***
 
