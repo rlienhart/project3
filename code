@@ -360,9 +360,11 @@ RR = {$\hat{\theta}$ < $\theta_0$ - $z_\alpha\sigma_\hat{\theta}$ or $\hat{\thet
 Therefore, RR = {$\hat\mu$ < $30000$ - $\frac{5000}{\sqrt{29}}z_.975$ or $\hat\mu$ > $30000$ + $\frac{5000}{\sqrt{29}}z_.975$}
 
 ```{r}
+#RR for alpha = .05
 30000 + (5000/sqrt(29))*qnorm(.025)
 30000 + (5000/sqrt(29))*qnorm(.975)
 
+#RR for alpha = .01
 30000 + (5000/sqrt(29))*qnorm(.005)
 30000 + (5000/sqrt(29))*qnorm(.995)
 ```
