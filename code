@@ -9,9 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(ggplot2)
-library(EnvStats)
-library(stats)
-library(truncnorm)
 ```
 
 #### 1. (20pts) Consider a left truncated Gaussian distribution with parameters $\mu$ and $\sigma^2$. The pdf of this distribution will be modified to include the truncation point. Refer to your lecture notes when this was discussed in class.
@@ -105,45 +102,54 @@ $$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^
 
 $$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^2) - \frac{n}{2}\log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2 - n\log(1-\phi(\frac{\ln(b)-\mu}{\sigma}))$$
 
+Note: $\log(L(\mu,\sigma^2))=\log\left(\prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}\right)=\sum_{i = 1}^{n}\log\left(\frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}\right)$ is used in part m.
+
 ##### l) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
 Normally to derive the MLEs, we would take the derivative of the log-likelihood function in terms of our estimators. That being said, our log-likelihood function is very complex and hard to get a derivative from. Our best option would be to use the optim function in r to find the MLEs for the left truncated lognormal distribution.
 
 ##### m) Perform computations in R: generate a sample from the left-truncated Lognormal distribution and calculate the MLEs by fitting the appropriate model and using the method suggested in l).
 
-```{r, cache=TRUE}
+```{r}
 set.seed(100)
-ln.ltrunc <- rlnormTrunc(10000, meanlog=0, sdlog=1, min=10)
+# generate sample of size 5000 from left truncated lognormal distribution with truncation point b=10
+ltruncln <- rep(NA, 5000)
+for (i in 1:5000) {
+  while(is.na(ltruncln[i])) {
+    y <- rlnorm(1, meanlog=0, sdlog=sqrt(1))
+    if (y >= 10) {
+      ltruncln[i] <- y
+    }
+  }
+}
 
-LL <- function(pars, y) {
+LL.ln <- function(pars, y) {
   sum <- 0
   mu <- pars[1]
   s2 <- pars[2]
-  b <- pars[3]
   for (i in 1:length(y)) {
-    sum <- sum + log(dlnormTrunc(y[i], meanlog=mu, sdlog=sqrt(s2), min=b))
+    sum <- sum + (log((dlnorm(y[i], meanlog=mu, sdlog=sqrt(s2)))/(1-plnorm(10, meanlog=mu, sdlog=sqrt(s2)))))
   }
   return(-sum)
 }
 
-pars <- c(0,1,10)
-mle <- optim(par=pars, fn=LL, method="Nelder-Mead", y=ln.ltrunc)$par
-mle
+pars <- c(0,1)
+ln.mle <- optim(par=pars, fn=LL.ln, method="Nelder-Mead", y=ltruncln)$par
+ln.mle
 ```
 
-$\hat{\mu}_{MLE}=0.004001414$
+$\hat{\mu}_{MLE}=-0.4357126$
 
-$\hat{\sigma}^2_{MLE}=1.001586203$
+$\hat{\sigma}^2_{MLE}=1.1285176$
 
 ##### n) Plot the sample and the density function in R. Label your plot accordingly.
 
 ```{r}
-hist(ln.ltrunc, prob=TRUE, breaks=30, ylim=c(0,0.2), main="Density Using MLE Estimates Over Left Truncated Lognormal Data", xlab="Left Truncated Lognormal Data")
-curve(dlnormTrunc(x, meanlog=mle[1], sdlog=sqrt(mle[2]), min=mle[3]), col="red", lwd=2, add=TRUE, yaxt="n")
+hist(ltruncln, prob=TRUE, breaks=30, main="Density Using MLE Estimates Over Left Truncated Lognormal Data", xlab="Value of Left-Truncated Lognormal Random Variable")
+curve(dlnorm(x, meanlog=ln.mle[1], sdlog=sqrt(ln.mle[2]))/(1-plnorm(10, meanlog=ln.mle[1], sdlog=sqrt(ln.mle[2]))), col="red", lwd=2, add=TRUE, yaxt="n")
 ```
 
 The shape of the plotted density of a left truncated lognormal distribution using the maximum likelihood estimators that were extracted using the optim function follows very closely to the shape of the histogram of the data simulated from a left truncated lognormal distribution with $\mu=0$, $\sigma^2=1$, and truncation point $b=10$.
-
 ***
 
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
