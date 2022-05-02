@@ -22,7 +22,7 @@ $$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\fr
 $$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})} \; dx$$
 
 $$= \frac{1}{1-\Phi(\frac{b-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \; dx$$
-an
+
 $$=\frac{\Phi(\frac{x-\mu}{\sigma})}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
 ##### c) Develop a Likelihood function for the left-truncated distribution.
