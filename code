@@ -320,11 +320,17 @@ Overall, the maximum likelihood estimators perform better than the method of mom
 
 ***
 
-#### 4. (20pts) Suppose you want to test the following hypotheses: $$H_o:\mu=30,000$$ $$H_a:\mu\neq30,000$$ Use $\alpha=0.05$ and $\alpha=0.01$.
-
-##### a) Define a rejection region for a given $\alpha$-level. Assume $\sigma=5,000$. All derivations must be included in the report. [Note: the sample size is small!]
+#### 4. (20pts) Suppose you want to test the following hypotheses: 
+Ho: μ = 30,000
+Ha: μ  ≠ 30,000
+Use α=0.05 and α=0.01.
+#####a) Define a rejection region for a given α-level. Assume σ=5,000. All derivations must be included in the report. [Note: the sample size is small!]
 
 Although the sample size is small, because we know the population standard deviation, we can use standard normal.
+
+RR = {$\hat{\theta}$ < $\theta_0$ - $z_\alpha\sigma_\hat{\theta}$ or $\hat{\theta}$ > $\theta_0$ + $z_\alpha\sigma_\hat{\theta}$}
+
+Therefore, RR = {$\hat\mu$ < $30000$ - $\frac{5000}{\sqrt{29}}z_.975$ or $\hat\mu$ > $30000$ + $\frac{5000}{\sqrt{29}}z_.975$}
 
 ```{r}
 30000 + (5000/sqrt(29))*qnorm(.025)
@@ -336,11 +342,12 @@ Although the sample size is small, because we know the population standard devia
 
 Given a small sample where n = 29:
 
-For $\alpha=0.05$, RR = {T < 28180.22 or T > 31819.78}
+For α=0.05, RR = {T < 28180.22 or T > 31819.78}
 
-For $\alpha=0.01$, RR = {T < 27608.4 or T > 32391.6}
+For α=0.01, RR = {T < 27608.4 or T > 32391.6}
 
-##### b) Construct two Power Curves for various values of $\beta$- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.]
+
+#####b) Construct two Power Curves for various values of β- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.] 
 
 ```{r}
 powerfunction <- function(mu, sd, alpha1, alpha2, n) {
@@ -363,18 +370,18 @@ powerfunction <- function(mu, sd, alpha1, alpha2, n) {
   
   
   ggplot() +
-  geom_path(aes(x=vec, y=power1), size=0.8, color="royalblue") +
-  geom_path(aes(x=vec, y=power2), size=0.8, color="limegreen") +
-  labs(y="Power", x="mu")
+  geom_path(aes(x=vec, y=power1, color=".05"), size=0.8) +
+  geom_path(aes(x=vec, y=power2, color=".01"), size=0.8) +
+  labs(y="Power", x="mu", color="alpha")
   
 }
 
 powerfunction(30000,5000,.05,.01,29)
 ```
 
-##### c) Reflect on your findings. How does $\alpha$-level impact the shape of the power curve? How does power changes with $\alpha$? How does power changes with $\alpha$? A minimum 5 full sentences are required for full credit.
+#####c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
 
-Increasing $\alpha$ causes the shape of the power curve to becomes more narrow. The area under the curve also increases as $\alpha$ does. This is a result of power increasing as $\alpha$ increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
+Increasing α causes the shape of the power curve to becomes more narrow. The area under the curve also increases as α does. This is a result of power increasing as α increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
 
 ***
 
