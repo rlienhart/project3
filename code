@@ -15,9 +15,15 @@ library(ggplot2)
 
 ##### a) Write down the density function of the left-truncated random variable if the truncation point is b.
 
+The density function of the left-truncated Gaussian distribution is:
+
 $$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
+$g(x|\mu,\sigma^2)$ is the PDF of the Gaussian distribution and $G(b|\mu, \sigma^2)$ is the CDF Gaussian distribution at b.
+
 ##### b) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
+
+Take the integral from 0 to $\infty$ of the PDF of the left-truncated Gaussian distribution to find the CDF:
 
 $$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})} \; dx$$
 
@@ -27,11 +33,15 @@ $$=\frac{\Phi(\frac{x-\mu}{\sigma})}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
 ##### c) Develop a Likelihood function for the left-truncated distribution.
 
+Take the product from 1 to n of the left-truncated Gaussian PDF to find the likelihood function:
+
 $$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
 $$= \frac{(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (x_i-\mu)^2}{2\sigma^2}}}{(1-\Phi(\frac{b-\mu}{\sigma}))^n}$$
 
 ##### d) Develop the log-likelihood function for the left-truncated distribution.
+
+Take the logarithm of the likelihood function above to find the log-likelihood function:
 
 $$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\Phi(\frac{b-\mu}{\sigma}))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
 
@@ -82,9 +92,15 @@ We see in the graph above that the MLE gained from using the optim function very
 
 ##### h) Write down the density function of the left-truncated random variable if the truncation point is b.
 
+The density function of the left-truncated lognormal distribution is:
+
 $$f(y|\mu,\sigma^2,b) =\frac{g(y|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}=\frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
+$g(y|\mu,\sigma^2)$ is the PDF of the lognormal distribution and $G(b|\mu, \sigma^2)$ is the CDF lognormal distribution at b.
+
 ##### i) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
+
+Take the integral from 0 to $\infty$ of the PDF of the left-truncated lognormal distribution to find the CDF:
 
 $$F(y|\mu,\sigma^2,b)=\int_{0}^{\infty} \frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})} \; dy$$
 
@@ -94,11 +110,15 @@ $$= \frac{\Phi(\frac{\ln(x)-\mu}{\sigma})}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 ##### j) Develop a Likelihood function for the left-truncated distribution.
 
+Take the product from 1 to n of the left-truncated lognormal PDF to find the likelihood function:
+
 $$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 $$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2}{2\sigma^2}}}{(1-\Phi(\frac{\ln(b)-\mu}{\sigma}))^n}$$
 
 ##### k) Develop the log-likelihood function for the left-truncated distribution.
+
+Take the logarithm of the likelihood function above to find the log-likelihood function:
 
 $$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^2) - \frac{n}{2}\log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2 - n\log(1-\phi(\frac{\ln(b)-\mu}{\sigma}))$$
 
@@ -323,7 +343,7 @@ $eff(\hat{\mu}_{MLE},\hat{\mu}_{MM})=\frac{Var(\hat{\mu}_{MM})}{Var(\hat{\mu}_{M
 
 $eff(\hat{\sigma}^2_{MLE},\hat{\sigma}^2_{MM})=\frac{Var(\hat{\sigma}^2_{MM})}{Var(\hat{\sigma}^2_{MLE})}=9.191056>1$, so $\hat{\sigma}^2_{MLE}$ is a better unbiased estimator for $\sigma^2$ than $\hat{\sigma}^2_{MM}$.
 
-Overall, the maximum likelihood estimators perform better than the method of moments estimators for estimating $\mu$ and $\sigma^2$ of a lognormal distribution.
+Overall, the maximum likelihood estimators perform better than the method of moments estimators for estimating $\mu$ and $\sigma^2$ of a lognormal distribution. From the the likelihood function in part c, we find that $\sum_{i=1}^{n}ln(y_i)$ and $\sum_{i=1}^{n}ln(y_i)^2$ are both sufficient statistics for $\mu$ and $\sigma^2$. The MLEs found for $\mu$ and $\sigma^2$ found in part c are both functions of these sufficient statistics, while the method of moments estimators in part b are not. This means that $\hat{\mu}_{MLE}$ and $\hat{\sigma}^2_{MLE}$ are minimum varaince unbiased estimators, so it would be expected that they perform better at estimating $\mu$ and $\sigma^2$ than $\hat{\mu}_{MM}$ and $\hat{\sigma}^2_{MM}$.
 
 ***
 
