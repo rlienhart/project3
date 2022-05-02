@@ -18,25 +18,25 @@ library(truncnorm)
 
 ##### a) Write down the density function of the left-truncated random variable if the truncation point is b.
 
-$$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}$$
+$$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
 ##### b) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
 
-$$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})} \; dx$$
+$$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})} \; dx$$
 
-$$= \frac{1}{1-\phi(\frac{b-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \; dx$$
+$$= \frac{1}{1-\Phi(\frac{b-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \; dx$$
 an
-$$=\frac{\phi(\frac{x-\mu}{\sigma})}{1-\phi(\frac{b-\mu}{\sigma})}$$
+$$=\frac{\Phi(\frac{x-\mu}{\sigma})}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
 ##### c) Develop a Likelihood function for the left-truncated distribution.
 
-$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}$$
+$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{b-\mu}{\sigma})}$$
 
-$$= \frac{(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (x_i-\mu)^2}{2\sigma^2}}}{(1-\phi(\frac{b-\mu}{\sigma}))^n}$$
+$$= \frac{(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (x_i-\mu)^2}{2\sigma^2}}}{(1-\Phi(\frac{b-\mu}{\sigma}))^n}$$
 
 ##### d) Develop the log-likelihood function for the left-truncated distribution.
 
-$$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\phi(\frac{b-\mu}{\sigma}))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
+$$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\Phi(\frac{b-\mu}{\sigma}))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
 
 ##### e) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
@@ -85,21 +85,21 @@ We see in the graph above that the MLE gained from using the optim function very
 
 ##### h) Write down the density function of the left-truncated random variable if the truncation point is b.
 
-$$f(y|\mu,\sigma^2,b) =\frac{g(y|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}=\frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
+$$f(y|\mu,\sigma^2,b) =\frac{g(y|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}=\frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 ##### i) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
 
-$$F(y|\mu,\sigma^2,b)=\int_{0}^{\infty} \frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})} \; dy$$
+$$F(y|\mu,\sigma^2,b)=\int_{0}^{\infty} \frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})} \; dy$$
 
-$$= \frac{1}{1-\phi(\frac{\ln(b)-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}} \; dy$$
+$$= \frac{1}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}} \; dy$$
 
-$$= \frac{\phi(\frac{\ln(x)-\mu}{\sigma})}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
+$$= \frac{\Phi(\frac{\ln(x)-\mu}{\sigma})}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 ##### j) Develop a Likelihood function for the left-truncated distribution.
 
-$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
+$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\Phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
-$$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2}{2\sigma^2}}}{(1-\phi(\frac{\ln(b)-\mu}{\sigma}))^n}$$
+$$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2}{2\sigma^2}}}{(1-\Phi(\frac{\ln(b)-\mu}{\sigma}))^n}$$
 
 ##### k) Develop the log-likelihood function for the left-truncated distribution.
 
