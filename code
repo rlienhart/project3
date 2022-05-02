@@ -150,6 +150,7 @@ curve(dlnorm(x, meanlog=ln.mle[1], sdlog=sqrt(ln.mle[2]))/(1-plnorm(10, meanlog=
 ```
 
 The shape of the plotted density of a left truncated lognormal distribution using the maximum likelihood estimators that were extracted using the optim function follows very closely to the shape of the histogram of the data simulated from a left truncated lognormal distribution with $\mu=0$, $\sigma^2=1$, and truncation point $b=10$.
+
 ***
 
 #### 3. (20pts) Simulate the data (n=1000) from a lognormal distribution with the parameters of your choice. Perform the following tasks:
