@@ -18,25 +18,25 @@ library(truncnorm)
 
 ##### a) Write down the density function of the left-truncated random variable if the truncation point is b.
 
-$$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}}))}$$
+$$f(x;\mu,\sigma^2,b) =\frac{g(x|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}= \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}$$
 
 ##### b) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
 
-$$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}}))} \; dx$$
+$$F(x;\mu,\sigma^2,b) = \int_{0}^{\infty} \frac{\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})} \; dx$$
 
-$$= \frac{1}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}}))} \int_{0}^{\infty} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \; dx$$
-
-$$=\frac{\frac{1}{2}(1 + erf(\frac{x-\mu}{\sqrt{2\sigma^2 }}))}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sqrt{2\sigma^2}}))}$$
+$$= \frac{1}{1-\phi(\frac{b-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \; dx$$
+an
+$$=\frac{\phi(\frac{x-\mu}{\sigma})}{1-\phi(\frac{b-\mu}{\sigma})}$$
 
 ##### c) Develop a Likelihood function for the left-truncated distribution.
 
-$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}}))}$$
+$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}$$
 
-$$= \frac{(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (x_i-\mu)^2}{2\sigma^2}}}{(1-\frac{1}{2}(1 + erf(\frac{b-\mu}{\sigma\sqrt{2}})))^n}$$
+$$= \frac{(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (x_i-\mu)^2}{2\sigma^2}}}{(1-\phi(\frac{b-\mu}{\sigma}))^n}$$
 
 ##### d) Develop the log-likelihood function for the left-truncated distribution.
 
-$$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\frac{1}{2}(1+erf(\frac{b-\mu}{\sigma\sqrt{2}})))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
+$$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\phi(\frac{b-\mu}{\sigma}))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
 
 ##### e) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
@@ -77,7 +77,7 @@ hist(x, prob=TRUE, main="Density Using MLE Estimates Over Left Truncated Gaussia
 curve(dtruncnorm(x, a=mle[3], mean=mle[1], sd=mle[2]), col="red", lwd=2, add=TRUE, yaxt="n")
 ```
 
-We see in the graph above that the MLE gained from using the optim function very accuratly reflects the randomly generated truncated gaussian data.
+We see in the graph above that the MLE gained from using the optim function very accurately reflects the randomly generated truncated gaussian data.
 
 ***
 
@@ -85,25 +85,25 @@ We see in the graph above that the MLE gained from using the optim function very
 
 ##### h) Write down the density function of the left-truncated random variable if the truncation point is b.
 
-$$f(y|\mu,\sigma^2,b) =\frac{g(y|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}=\frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{\ln(b)-\mu}{\sigma\sqrt{2}}))}$$
+$$f(y|\mu,\sigma^2,b) =\frac{g(y|\mu,\sigma^2)}{1-G(b|\mu, \sigma^2)}=\frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 ##### i) Derive the CDF of the left-truncated random variable. You will need to use some knowledge from STA401.
 
-$$F(y|\mu,\sigma^2,b)=\int_{0}^{\infty} \frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{\ln(b)-\mu}{\sigma\sqrt{2}}))} \; dy$$
+$$F(y|\mu,\sigma^2,b)=\int_{0}^{\infty} \frac{\frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})} \; dy$$
 
-$$= \frac{1}{1-\frac{1}{2}(1+erf(\frac{\ln(b)-\mu}{\sigma\sqrt{2}}))} \int_{0}^{\infty} \frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}} \; dy$$
+$$= \frac{1}{1-\phi(\frac{\ln(b)-\mu}{\sigma})} \int_{0}^{\infty} \frac{1}{y\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y)-\mu)^2}{2\sigma^2}} \; dy$$
 
-$$= \frac{\frac{1}{2}(1+erf(\frac{ln(y)-\mu}{\sigma\sqrt2}))}{1-\frac{1}{2}(1+erf(\frac{ln(b)-\mu}{\sigma\sqrt2}))}$$
+$$= \frac{\phi(\frac{\ln(x)-\mu}{\sigma})}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
 ##### j) Develop a Likelihood function for the left-truncated distribution.
 
-$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\frac{1}{2}(1+erf(\frac{\ln(b)-\mu}{\sigma\sqrt{2}}))}$$
+$$L(\mu, \sigma^2) = \prod_{i = 1}^{n} \frac{\frac{1}{y_i\sigma\sqrt{2\pi}}e^{-\frac{(\ln(y_i)-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{\ln(b)-\mu}{\sigma})}$$
 
-$$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2}{2\sigma^2}}}{(1-\frac{1}{2}(1 + erf(\frac{\ln(b)-\mu}{\sigma\sqrt{2}})))^n}$$
+$$= \frac{(\prod_{i = 1}^{n}\frac{1}{y_i})(\frac{1}{\sigma^22\pi})^\frac{n}{2}e^{-\frac{\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2}{2\sigma^2}}}{(1-\phi(\frac{\ln(b)-\mu}{\sigma}))^n}$$
 
 ##### k) Develop the log-likelihood function for the left-truncated distribution.
 
-$$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^2) - \frac{n}{2}\log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2 - n\log(1-\frac{1}{2}(1 + erf(\frac{\ln(b)-\mu}{\sigma\sqrt2})))$$
+$$\log(L(\mu,\sigma^2)) = -\log(\prod_{i = 1}^{n} y_i) - \frac{n}{2}\log(\sigma^2) - \frac{n}{2}\log(2\pi) - \frac{1}{2\sigma^2}\sum_{i = 1}^{n} (\ln(y_i)-\mu)^2 - n\log(1-\phi(\frac{\ln(b)-\mu}{\sigma}))$$
 
 ##### l) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
@@ -154,7 +154,7 @@ set.seed(123)
 n <- 1000
 mu <- 0
 s2 <- 1
-x <- rlnorm(n, meanlog = mu, sdlog = s2)
+x <- rlnorm(n, meanlog = mu, sdlog = sqrt(s2))
 ```
 
 ##### a) Plot the histogram of your data in R
@@ -320,12 +320,12 @@ Overall, the maximum likelihood estimators perform better than the method of mom
 
 ***
 
-####4. (20pts) Suppose you want to test the following hypotheses: 
-Ho: μ = 30,000
-Ha: μ  ≠ 30,000
-Use α=0.05 and α=0.01.
-#####a) Define a rejection region for a given α-level. Assume σ=5,000. All derivations must be included in the report. [Note: the sample size is small!]
+#### 4. (20pts) Suppose you want to test the following hypotheses: $$H_o:\mu=30,000$$ $$H_a:\mu\neq30,000$$ Use $\alpha=0.05$ and $\alpha=0.01$.
+
+##### a) Define a rejection region for a given $\alpha$-level. Assume $\sigma=5,000$. All derivations must be included in the report. [Note: the sample size is small!]
+
 Although the sample size is small, because we know the population standard deviation, we can use standard normal.
+
 ```{r}
 30000 + (5000/sqrt(29))*qnorm(.025)
 30000 + (5000/sqrt(29))*qnorm(.975)
@@ -336,12 +336,11 @@ Although the sample size is small, because we know the population standard devia
 
 Given a small sample where n = 29:
 
-For α=0.05, RR = {T < 28180.22 or T > 31819.78}
+For $\alpha=0.05$, RR = {T < 28180.22 or T > 31819.78}
 
-For α=0.01, RR = {T < 27608.4 or T > 32391.6}
+For $\alpha=0.01$, RR = {T < 27608.4 or T > 32391.6}
 
-
-#####b) Construct two Power Curves for various values of β- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.] 
+##### b) Construct two Power Curves for various values of $\beta$- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.]
 
 ```{r}
 powerfunction <- function(mu, sd, alpha1, alpha2, n) {
@@ -373,10 +372,12 @@ powerfunction <- function(mu, sd, alpha1, alpha2, n) {
 powerfunction(30000,5000,.05,.01,29)
 ```
 
-#####c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
+##### c) Reflect on your findings. How does $\alpha$-level impact the shape of the power curve? How does power changes with $\alpha$? How does power changes with $\alpha$? A minimum 5 full sentences are required for full credit.
 
-Increasing α causes the shape of the power curve to becomes more narrow. The area under the curve also increases as α does. This is a result of power increasing as α increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
+Increasing $\alpha$ causes the shape of the power curve to becomes more narrow. The area under the curve also increases as $\alpha$ does. This is a result of power increasing as $\alpha$ increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
 
-5. (20pts) Provide a reflection about this project work by considering the following questions: 1) How does this project enhanced your learning about the course topics? How much this project sharpens your critical thinking skills? What were the difficulties that you were facing as you worked through this project? How did you resolve them? How much did you grow by working on some advanced topics in this course? How do you think this project would prepare you for your future job? What skills did you build working on the STA462 projects? The UAs are expected to work with you on this project. State specifically the name of the UA you worked with and how much help you got from your UA.  
+***
 
-This project enhanced our learning skills by having us apply techniques learned in class to distributions we were unfamiliar with. Our critical thinking skills were enhanced by finding these new distributions and having to learn about them and understand them. We had to research these truncated distributions, find out their pdfs, and understand their equations. Then, we had to apply concepts like the method of moments estimators and MLEs to these distributions. We believe we learned a lot about tackling these tough problems, specifically growing in our ability to handle topics we had not previously discussed. The biggest difficulties we faced were understanding these distributions and their equations, and how to find the MLE of these complex pdfs. We resolved these problems by working togehter as a group and asking our UA Justus for help when we got stuck. I think this project prepared us for a future job by teaching us a lot about working as a group on a complex topic. We worked together to research and understand different things, and we learned to ask for help when we needed to. Our UA Justus helped a lot on this project, he did a great job of checking over our work when needed, and pushing us in the right direction whenever we got stuck.
+#### 5. (20pts) Provide a reflection about this project work by considering the following questions: 1) How does this project enhanced your learning about the course topics? How much this project sharpens your critical thinking skills? What were the difficulties that you were facing as you worked through this project? How did you resolve them? How much did you grow by working on some advanced topics in this course? How do you think this project would prepare you for your future job? What skills did you build working on the STA462 projects? The UAs are expected to work with you on this project. State specifically the name of the UA you worked with and how much help you got from your UA. I expect to see a min of 10 full sentences for this reflection.
+
+This project enhanced our learning skills by having us apply techniques learned in class to distributions we were unfamiliar with. Our critical thinking skills were enhanced by finding these new distributions and having to learn about them and understand them. We had to research these truncated distributions, find out there pdfs, and understand their equations. Then, we had to apply concepts like the method of moments estimators and MLEs to these distributions. We believe we learned a lot about tackling these tough problems, specifically growing in our ability to handle topics we had not previously discussed. The biggest difficulties we faced were understanding these distributions and their equations, and how to find the MLE of these complex pdfs. We resolved these problems by working together as a group and asking our UA Justus for help when we got stuck. I think this project prepared us for a future job by teaching us a lot about working as a group on a complex topic. We worked together to research and understand different things, and we learned to ask for help when we needed to. Our UA Justus helped a lot on this project, he did a great job of checking over are work when needed, and pushing us in the right direction whenever we got stuck.
