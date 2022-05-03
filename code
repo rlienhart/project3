@@ -79,7 +79,7 @@ $\hat{\sigma^2}_{MLE}=3.9897$
 
 ```{r}
 hist(x, prob=TRUE, main="Density Using MLE Estimates Over Left Truncated Gaussian Data", xlab="Left Truncated Gaussian Data")
-curve((dnorm(x, mean=mle[1], sd=mle[2]))/(1-pnorm(2, mean=mle[1], sd=mle[2])), col="red", lwd=2, add=TRUE, yaxt="n")
+curve((dnorm(x, mean=mle[1], sd=sqrt(mle[2])))/(1-pnorm(2, mean=mle[1], sd=sqrt(mle[2]))), col="red", lwd=2, add=TRUE, yaxt="n")
 ```
 
 We see in the graph above that the MLE gained from using the optim function very accurately reflects the randomly generated truncated gaussian data.
