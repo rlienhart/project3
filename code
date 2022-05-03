@@ -45,6 +45,8 @@ Take the logarithm of the likelihood function above to find the log-likelihood f
 
 $$\log(L(\mu,\sigma^2))=-\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)-n\log(1-\Phi(\frac{b-\mu}{\sigma}))-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_{i}-\mu)^2$$
 
+Note: $\log(L(\mu,\sigma^2))=\log\left(\prod_{i = 1}^{n}\frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}\right)=\sum_{i = 1}^{n}\log\left(\frac{\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i-\mu)^2}{2\sigma^2}}}{1-\phi(\frac{b-\mu}{\sigma})}\right)$ is used in part f.
+
 ##### e) How are you going to find MLEs? What options do you have? Discuss and solve this problem.
 
 Normally to derive the MLEs, we would take the derivative of the log-likelihood function in terms of our estimators. That being said, our log-likelihood function is very complex and hard to get a derivative from. Our best option would be to use the optim function in r to find the MLEs for the left truncated Gaussian distribution.
@@ -349,7 +351,7 @@ Overall, the maximum likelihood estimators perform better than the method of mom
 Ho: μ = 30,000
 Ha: μ  ≠ 30,000
 Use α=0.05 and α=0.01.
-#####a) Define a rejection region for a given α-level. Assume σ=5,000. All derivations must be included in the report. [Note: the sample size is small!]
+##### a) Define a rejection region for a given α-level. Assume σ=5,000. All derivations must be included in the report. [Note: the sample size is small!]
 
 Although the sample size is small, because we know the population standard deviation, we can use standard normal.
 
@@ -374,7 +376,7 @@ For α=0.05, RR = {T < 28180.22 or T > 31819.78}
 For α=0.01, RR = {T < 27608.4 or T > 32391.6}
 
 
-#####b) Construct two Power Curves for various values of β- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.] 
+##### b) Construct two Power Curves for various values of β- Type II error rate. These curves must be on the same plot. [Note: you will need to consider various values for the sample mean.] 
 
 ```{r}
 powerfunction <- function(mu, sd, alpha1, alpha2, n) {
@@ -406,7 +408,7 @@ powerfunction <- function(mu, sd, alpha1, alpha2, n) {
 powerfunction(30000,5000,.05,.01,29)
 ```
 
-#####c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
+##### c) Reflect on your findings. How does α-level impact the shape of the power curve? How does power changes with α? How does power changes with β? A minimum 5 full sentences are required for full credit. 
 
 Increasing α causes the shape of the power curve to becomes more narrow. The area under the curve also increases as α does. This is a result of power increasing as α increases. As the value of beta decreases, the power increases. This happens because the distance between the specified null value and the specified alternative value increases.
 
@@ -415,8 +417,13 @@ Increasing α causes the shape of the power curve to becomes more narrow. The ar
 #### 5. (20pts) Provide a reflection about this project work by considering the following questions: 1) How does this project enhanced your learning about the course topics? How much this project sharpens your critical thinking skills? What were the difficulties that you were facing as you worked through this project? How did you resolve them? How much did you grow by working on some advanced topics in this course? How do you think this project would prepare you for your future job? What skills did you build working on the STA462 projects? The UAs are expected to work with you on this project. State specifically the name of the UA you worked with and how much help you got from your UA. I expect to see a min of 10 full sentences for this reflection.
 
 This project enhanced our learning skills by having us apply techniques learned in class to unique cases of distributions familiar to us. Our critical thinking skills were enhanced through the challenges we faced. For example, we had to research the truncated distributions, find out their pdfs, and understand their equations before being able to tackle questions 1 and 2. Next, we had to apply the concepts of MLEs to these distributions by finding the MLEs by using the optim function. We also had to derive the formulas for the method of moments esimators and MLEs of the lognormal distribution and compare the performance of these estimators. Then, we had to create a function that produces a power curve for a two tailed normal distribution. We believe we learned a lot about tackling these tough problems, specifically growing in our ability to handle topics we've discussed, but haven't had a significant amount of experience working with them. The biggest difficulties we faced were deriving the CDFs for truncated normal and truncated log normal, and using MLE to estimate the log normal parameters. We resolved these problems by working together as a group and asking our UA Justus for help when we got stuck. I think this project prepared us for a future job by teaching us a lot about working as a group on a complex topic. We worked together to research and understand different things, and we learned to ask for help when we needed to. We also improved our skills of using R for various techniques, such as using the optim function to extract MLEs, generating samples to develop method of moments estimators and MLEs, or constructing power curves. Our UA Justus helped a lot on this project on a few occassions. We specifically reached out to him to check our parameters in question 3, help with the power curve in question 4, and to help understand how to fix our question 1. He did a great job of checking over are work when needed, and pushing us in the right direction whenever we got stuck.
-Group Contributions
+
+##### Group Contributions:
+
 Questions 1 and 2 were worked on as a group
+
 Rachel: Q3
+
 Ryan: Q4
+
 Sean: Q5
