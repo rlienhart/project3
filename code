@@ -59,21 +59,21 @@ x <- x[x>2]
 LL <- function(pars, y) {
   sum <- 0
   mu <- pars[1]
-  sd <- pars[2]
+  s2 <- pars[2]
   for (i in 1:length(y)) {
-    sum <- sum + log((dnorm(y[i], mean=mu, sd=sd))/(1-pnorm(2, mean=mu, sd=sd)))
+    sum <- sum + log((dnorm(y[i], mean=mu, sd=sqrt(s2)))/(1-pnorm(2, mean=mu, sd=sqrt(s2))))
   }
   return(-sum)
 }
 
-pars <- c(4,2)
+pars <- c(4,4)
 mle <- optim(par=pars, fn=LL, method="Nelder-Mead", y=x)$par
 mle
 ```
 
-$\hat{\mu}_{MLE}=4.119$
+$\hat{\mu}_{MLE}=4.1185$
 
-$\hat{\sigma}_{MLE}=1.997$
+$\hat{\sigma^2}_{MLE}=3.9897$
 
 #####  g) Plot the sample and the density function in R. Label your plot accordingly.
 
